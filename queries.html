@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="query.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Quicksand&display=swap" rel="stylesheet">
+    <title> Tela de Query </title>
+</head>
+<body>
+    <h1> Tela com as Queries que foram usadas e onde foram usadas: </h1>
+    <h4> Informações do Aluno:</h4>
+    <p><b>Nome:</b> Ingrid Ailana </p>
+    <p><b>Unidade:</b> Bonsucesso </p>
+    <p> <b>Não</b> fiz o primeiro módulo.</p><br>
+
+    <ul> 
+           <li><p><b> Cadastrar.php:</b></p> </li> 
+             <i> "$result = mysqli_query($conexao, "INSERT INTO usuarios 
+            (ID_USU, NOME_USU, DT_NASC, NOME_MAE, CPF, CEL_USU, TELFIXO, ENDERECO, LOGIN_USU, SENHA_USU, ID_PERFIL, STATUS_ID)
+             VALUES (null, '$nome', '$dt_nasc', '$nome_mae', '$cpf', '$celular', '$telfixo', '$endereco', '$login', '$senha', 'C', 'A')"); " </i>
+            <p>- Query que vai gravar todos os campos informados na tela de cadastro no banco de dados. </p>
+
+            <li><p><b> Verificação.php:</b></p> </li> 
+             <i> "$sql = "SELECT * FROM usuarios WHERE LOGIN_USU = '$login'"; " </i>
+            <p> - Query que vai buscar na tabela "usuarios" o login informado. </p>
+
+            <i> "$sql = "SELECT * FROM usuarios WHERE LOGIN_USU = '$login'"; " </i>
+            <p> - Query pra buscar o usuário no sistema. </p>
+
+            <li><p><b> 2FA.php:</b></p> </li> 
+            <i> "$sql = "SELECT * FROM usuarios WHERE ID_USU = '" . $_SESSION['ID_USU'] . "'"; "</i>
+           <p> - Vai buscar na tabela "usuarios" o ID do usuário informado na sessão. </p>
+
+           <i>  "$sql = "INSERT INTO registro ( hora_ac, metodo_ac, status_ac, ID_USU) 
+            VALUES ( '" . DATE('d-m-Y H:i:s') . "', 'NOME_MAE', 'ON','" . $_SESSION['ID_USU'] . "') ";</i>
+          <p> - Grava na tabela "registro" a hora do acesso, o metodo, se conseguiu logar e com que login entrou no sistema. </p>
+
+          <li><p><b> baixarlog.php:</b></p> </li> 
+          <i> ""$result_transacoes = "SELECT r.*,u.* FROM registro as r, usuarios as u where u.ID_USU=r.ID_USU order by ID_REG DESC"; "</i>
+         <p> - Faz uma busca ordenada de forma decrescente nas tabelas "registro" e "usuarios" onde o ID do usuário seja igual ao ID do usuário 
+            no registro.</p>
+
+            <li><p><b> config.php:</b></p> </li> 
+            <i> "$conexao = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME); " </i>
+           <p> - Conecta com banco de dados usando o servidor, o nome do usuário, a senha e o nome do banco. </p>
+
+           <li><p><b> telaadm.php:</b></p> </li> 
+            <i> "$sql = "SELECT c. *, p.* ,s.* FROM usuarios as c, perfil_usuarios as p, status_usuarios as s  
+                WHERE c. ID_PERFIL = p. ID_PERFIL and c.status_ID=s.status_ID "; "</i>
+           <p> - Busca na tabela "usuarios" o perfil dos usuarios e status onde o "ID_PERFIL" da tabela "perfil_usuarios" 
+            seja igual ao da tabela "status_usuarios" e"status_ID" da tabela "perfil_usuarios" seja igual ao "status_ID" 
+            da tabela "status_usuarios.</p>
+
+           <i> "$sql="UPDATE usuarios set ID_PERFIL='".$dados['perfil']."',status_ID='".$dados['status']."' " </i>
+           <p> - Atualiza os dados da tabela "usuarios" com os dados informados no perfil. </p>
+
+           <li><p><b> telausuario.php </b></p></li>
+           <i> "$sql = "SELECT c. *, p.* FROM usuarios as c, perfil_usuarios as p 
+            WHERE c. ID_PERFIL = p. ID_PERFIL and ID_USU  ='" . $_SESSION['ID_USU'] . "'"; "</i>
+            <p> - Busca na tabela "usuarios" e na tabela "perfil_usuarios" onde o ID_PERFIL da tabela "usuarios" 
+                seja igual os ID_PERFIL da tabela "perfil_usuarios" e o ID_USU seja igual ao da sessão.</p>
+
+            <i> "$sql = "UPDATE usuarios set status_ID='E' Where ID_USU='" . $_SESSION['ID_USU'] . "'"; "</i>
+            <p> - Atualiza a tabela "usuarios" e o status_ID para "excluido" onde o ID_USU for o mesmo utilizado na sessão. </p> 
+            <br><br><br>
+    </ul>
+
+</body>
+</html>
